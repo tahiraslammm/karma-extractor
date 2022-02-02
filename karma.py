@@ -1,8 +1,9 @@
 import datetime
 import re
 from tabulate import tabulate
+import RedditAPI
 
-namesOfSubs = ['CryptoCurrency','ethtrader','Vechain','linux','HydroHomies']
+namesOfSubs = ['CryptoCurrency','ethtrader','dankmemes','HydroHomies','Vechain']
 subInfo = ''
 previousKarma = []
 currentKarma = []
@@ -20,18 +21,17 @@ def findSub(fileName,subName):
 # get the sub name, post karma and comment karma
 def extractInfo():
     list = []
-    
+
     # name of the sub
-    subName = re.findall(r'\[.*?\]', subInfo)
+    subName = re.findall(r'\[.*?\]', str(subInfo))
     list.append(subName[0][1:-1])
 
     # post and comment karma
-    commentKarma = re.findall(r'\|.*?\n', subInfo)
-    toString = str(commentKarma[0][1:-1])
-    afterSplit = toString.split("|")
+    commentKarma = re.findall(r'\|.*', str(subInfo))
+    toString = str(commentKarma[0][1:])
+    afterSplit = toString.split(" | ")
     for i in range(len(afterSplit)):
         list.append(afterSplit[i])
-
     return list
 
 # calculate the karma difference
@@ -64,7 +64,7 @@ for i in range(len(previousKarma)):
     karma = earnedKarma(previousKarma[i],currentKarma[i])
     difference.append(karma)
 
-# console display
+#console display
 table = difference
 print(tabulate(table, headers=["Reddit Subs","Post Karma", "Comment Karma"]))
 
@@ -74,5 +74,4 @@ def createFile(difference):
     cTime = (x.strftime("%I-" +"%M-" + "%A"))
     f = open(cTime+".txt", "x")
     f.write(str(tabulate(table, headers=["Reddit Subs","Post Karma", "Comment Karma"])))
-
 #createFile(difference)
