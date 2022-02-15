@@ -3,6 +3,8 @@ import re
 from tabulate import tabulate
 import RedditAPI
 
+RedditAPI.saveFile()
+
 namesOfSubs = ['CryptoCurrency','ethtrader','dankmemes','HydroHomies','Vechain']
 subInfo = ''
 previousKarma = []
@@ -53,25 +55,29 @@ def earnedKarma(pre, cur):
 
 # find the post and comment karma of different subs
 for i in namesOfSubs:
-    subInfo = findSub('./previousKarma.txt',i)
+    subInfo = findSub('./previousKarma.txt', i)
     previousKarma.append(extractInfo())
 
-    subInfo = findSub('./currentKarma.txt',i)
+    subInfo = findSub('./currentKarma.txt', i)
     currentKarma.append(extractInfo())
 
 # calculate the earned karma
 for i in range(len(previousKarma)):
-    karma = earnedKarma(previousKarma[i],currentKarma[i])
+    karma = earnedKarma(previousKarma[i], currentKarma[i])
     difference.append(karma)
 
-#console display
-table = difference
-print(tabulate(table, headers=["Reddit Subs","Post Karma", "Comment Karma"]))
 
-# write a file
-def createFile(difference):
-    x = datetime.datetime.now()
-    cTime = (x.strftime("%I-" +"%M-" + "%A"))
-    f = open(cTime+".txt", "x")
-    f.write(str(tabulate(table, headers=["Reddit Subs","Post Karma", "Comment Karma"])))
-#createFile(difference)
+
+if __name__ == "__main__":
+
+    #console display
+    table = difference
+    print(tabulate(table, headers=["Reddit Subs", "Post Karma", "Comment Karma"]))
+
+    # write a file
+    def createFile(difference):
+        x = datetime.datetime.now()
+        cTime = (x.strftime("%I-" +"%M-" + "%A"))
+        f = open(cTime+".txt", "x")
+        f.write(str(tabulate(table, headers=["Reddit Subs", "Post Karma", "Comment Karma"])))
+    #createFile(difference)

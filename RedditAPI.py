@@ -30,7 +30,10 @@ def saveFile():
             toWrite = f"[{new_data[i]['sr']}](//www.reddit.com/r/{new_data[i]['sr']}) | {new_data[i]['link_karma']} | {new_data[i]['comment_karma']} \n"
             f.write(str(toWrite))
     f.close()
-saveFile()
+    
 
+if __name__ == "__main__":
+        saveFile()
+        print("file saved")
 
 
